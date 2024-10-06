@@ -10,7 +10,6 @@
    ```
 3. Посчитать количество поездок - select count(*) from book.tickets; 
    ```
-   select count(*) from book.tickets;
    count
    -------
    5185505

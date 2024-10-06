@@ -12,4 +12,4 @@ logs:
 
 .PHONY: psql
 psql:
-	docker exec -it postgres psql -U postgres -d thai
+	docker exec -it postgres psql -U postgres -d postgres

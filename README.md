@@ -23,3 +23,4 @@ make psql
 
 ## Список Заданий
 - [Задание 1](tasks/01task.md)
+- [Задание 2](tasks/02task.md)
