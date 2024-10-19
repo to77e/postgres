@@ -13,3 +13,7 @@ logs:
 .PHONY: psql
 psql:
 	docker exec -it postgres psql -U postgres -d postgres
+
+.PHONY: connect
+connect:
+	docker exec -it postgres bash
