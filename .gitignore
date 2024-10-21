@@ -1,5 +1,6 @@
 /bin
 /tmp
+/data
 .DS_Store
 .DS_STORE
 .idea

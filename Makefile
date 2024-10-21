@@ -10,10 +10,18 @@ down:
 logs:
 	docker-compose -f docker-compose.yaml logs -f
 
-.PHONY: psql
-psql:
-	docker exec -it postgres psql -U postgres -d postgres
+.PHONY: psql_primary
+psql_primary:
+	docker exec -it postgres_primary psql -U postgres -d postgres
 
-.PHONY: connect
-connect:
-	docker exec -it postgres bash
+.PHONY: psql_replica
+psql_replica:
+	docker exec -it postgres_replica psql -U postgres -d postgres
+
+.PHONY: connect_primary
+connect_primary:
+	docker exec -it postgres_primary bash
+
+.PHONY: connect_replica
+connect_replica:
+	docker exec -it postgres_replica bash
