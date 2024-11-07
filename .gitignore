@@ -1,6 +1,8 @@
 /bin
 /tmp
 /data
+/primary/data
+/replica/data
 .DS_Store
 .DS_STORE
 .idea

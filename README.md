@@ -26,4 +26,4 @@ make psql
 - [Задание 2](tasks/02task.md)
 - [Задание 3](tasks/03task.md)
 - [Задание 4](tasks/04task.md)
-- [Задание 6](tasks/06task.md)
+- [Задание 5](tasks/05task)

@@ -6,6 +6,12 @@ up:
 down:
 	docker-compose -f docker-compose.yaml down -v
 
+.PHONY: clean
+clean:
+	rm -rf primary/data
+	rm -rf replica/data
+
+
 .PHONY: logs
 logs:
 	docker-compose -f docker-compose.yaml logs -f
@@ -16,7 +22,7 @@ psql_primary:
 
 .PHONY: psql_replica
 psql_replica:
-	docker exec -it postgres_replica psql -U postgres -d postgres
+	docker exec -it postgres_replica psql -U postgres -d thai
 
 .PHONY: connect_primary
 connect_primary:

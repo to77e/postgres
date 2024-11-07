@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
   postgres_primary:
     image: postgres:16.4-alpine3.20
@@ -11,11 +9,12 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=postgres
+      - POSTGRES_REPLICA_USER=replicator
+      - POSTGRES_REPLICA_PASSWORD=replicator
     volumes:
-      - ./init_thai.sh:/docker-entrypoint-initdb.d/init_thai.sh
-      - ./data/primary:/var/lib/postgresql/data
+      - ./primary/init.sh:/docker-entrypoint-initdb.d/init.sh
+      - ./primary/data:/var/lib/postgresql/data
       - ./primary/postgresql.conf:/etc/postgresql/postgresql.conf
-      - ./primary/pg_hba.conf:/etc/postgresql/pg_hba.conf
     command: ["postgres", "-c", "config_file=/etc/postgresql/postgresql.conf"]
     healthcheck:
       test: pg_isready -U postgres -d postgres
@@ -23,6 +22,8 @@ services:
       timeout: 45s
       retries: 10
     restart: always
+    networks:
+      - pgnet
 
   postgres_replica:
     image: postgres:16.4-alpine3.20
@@ -33,11 +34,19 @@ services:
       - POSTGRES_PORT=5432
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+      - POSTGRES_REPLICA_USER=replicator
+      - POSTGRES_REPLICA_PASSWORD=replicator
+      - POSTGRES_PRIMARY_HOST=postgres_primary
     volumes:
-      - ./data/replica:/var/lib/postgresql/data
-      - ./replica/postgresql.conf:/etc/postgresql/postgresql.conf
-      - ./replica/pg_hba.conf:/etc/postgresql/pg_hba.conf
-    command: [ "postgres", "-c", "config_file=/etc/postgresql/postgresql.conf" ]
+      - ./replica/init.sh:/docker-entrypoint-initdb.d/init.sh
+      - ./replica/data:/var/lib/postgresql/data
     depends_on:
-      - postgres_primary
-    restart: always
+      postgres_primary:
+        condition: service_healthy
+    networks:
+      - pgnet
+
+networks:
+  pgnet:
+    driver: bridge
